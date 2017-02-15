@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html ng-app="myQuiz">
+<div class="content"><span class="cont"></span></div>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Vollkorn:400,400italic' rel='stylesheet' type='text/css'>
+    <title>General Knowledge Quiz</title>
+    <link rel="stylesheet" type="text/css" href="css/simpletextrotator.css">
+    <link rel="stylesheet" type="text/css" href="css/quiz.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+
+<body>
+<div id=wrapper ng-controller="Quizcontroller">
+    <div id="quiz">
+        <h1>Mathematics <span class="rotate">Quiz, Test</span>
+        </h1>
+
+        <div class="qprogress">
+            <div class="
+                    
+                {{($index === activeQuestion) ? 'on' : 'off'}}
+                    {{myQuestion.questionState =='answered' ? 'answered' : 'unanswered'}}
+                        {{myQuestion.correctness === 'correct' ? 'correct' : 'incorrect'}}
+                    
+                " ng-repeat="myQuestion in myQuestions"></div>
+
+
+        </div>
+        <div class="intro {{(activeQuestion > -1) ? 'inactive' : 'active'}}">
+            <h2>Welcome</h2>
+
+            <p>Click begin to test your Mathematics Test</p>
+
+            <p class="btn" ng-click="activeQuestion = 0">Begin</p>
+        </div>
+        <div class="question
+                  {{myQuestion.questionState =='answered' ? 'answered' : 'unanswered'}}
+                  {{$index  === activeQuestion ? 'active' : 'inactive'}}" ng-repeat="myQuestion in myQuestions">
+            <p class="txt">{{myQuestion.question}}</p>
+
+            <p class="ans" ng-class="{
+                image:myAnswer.image,
+                correct:isCorrect($parent.$index,$index),
+                selected:isSelected($parent.$index,$index) 
+                }" ng-style="{ 'background-image':'url({{myAnswer.image}})'}"
+               ng-click="selectAnswer($parent.$index,$index)" ng-repeat="myAnswer in myQuestions[$index].answers">
+                {{myAnswer.text}}</p>
+
+            <div class="feedback">
+                <p ng-show="myQuestion.correctness=='correct'">You are <strong>Correct</strong>.</p>
+
+                <p ng-show="myQuestion.correctness=='incorrect'">Oops! That's <strong>not Correct</strong>.</p>
+
+                <p>{{myQuestion.feedback}}</p>
+
+                <div class="btn" ng-click="selectContinue()">Continue..</div>
+
+            </div>
+        </div>
+        <div class="results {{(totalQuestions === activeQuestion) ? 'active moveup' : 'inactive'}}">
+            <h3>Results</h3>
+
+            <p>You Scored {{percentage}}% by Correctly answering {{score}} of the total {{totalQuestions}}
+                questions.</p>
+
+            <p>Use the links below to challenge your friends</p>
+
+            <div class="share" ng-bind-html="createShareLinks(percentage)">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- markup goes here -->
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery.simple-text-rotator.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/Custom.js"></script>
+</body>
+
+</html>
